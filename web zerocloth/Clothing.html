@@ -1,0 +1,266 @@
+<?php
+session_start();
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form_name']) && $_POST['form_name'] == 'loginform')
+{
+   $success_page = './Pemesanan.html';
+   $error_page = basename(__FILE__);
+   $database = './usersdb.php';
+   $crypt_pass = md5($_POST['password']);
+   $found = false;
+   $fullname = '';
+   $session_timeout = 600;
+   if (filesize($database) > 0)
+   {
+      $items = file($database, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+      foreach ($items as $line)
+      {
+         list($username, $password, $email, $name, $active) = explode('|', trim($line));
+         if ($username == $_POST['username'] && $active != "0" && $password == $crypt_pass)
+         {
+            $found = true;
+            $fullname = $name;
+            break;
+         }
+      }
+   }
+   if ($found == false)
+   {
+      header('Location: '.$error_page);
+      exit;
+   }
+   else
+   {
+      $_SESSION['username'] = $_POST['username'];
+      $_SESSION['fullname'] = $fullname;
+      $_SESSION['expires_by'] = time() + $session_timeout;
+      $_SESSION['expires_timeout'] = $session_timeout;
+      $rememberme = isset($_POST['rememberme']) ? true : false;
+      if ($rememberme)
+      {
+         setcookie('username', $_POST['username'], time() + 3600*24*30);
+         setcookie('password', $_POST['password'], time() + 3600*24*30);
+      }
+      header('Location: '.$success_page);
+      exit;
+   }
+}
+$username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+$password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
+?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Page</title>
+<meta name="generator" content="WYSIWYG Web Builder 16 - https://www.wysiwygwebbuilder.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="font-awesome.min.css" rel="stylesheet">
+<link href="Wildan_Mahiyat_419281.css" rel="stylesheet">
+<link href="Clothing.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="wb.panel.min.js"></script>
+<script src="searchindex.js"></script>
+<script src="wb.sitesearch.min.js"></script>
+<script>
+var features = 'toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes,status=no,left=,top=,width=,height=';
+function searchPage(features)
+{
+   var element = document.getElementById('SiteSearch1');
+   window.open('sitesearch1-results.html?q='+encodeURIComponent(element.value), '', features);
+   return false;
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   searchParseURL('SiteSearch1');
+   $("#PanelMenu1").panel({animate: true, animationDuration: 200, animationEasing: 'linear', dismissible: true, display: 'overlay', position: 'right', toggle: true, overlay: true});
+});
+</script>
+</head>
+<body>
+<div id="wb_Form1" style="position:absolute;left:19px;top:13px;width:1271px;height:1494px;z-index:75;">
+<form name="Form1" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form1">
+<div id="wb_Form4" style="position:absolute;left:254px;top:287px;width:196px;height:245px;z-index:28;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form4">
+<div id="wb_Image1" style="position:absolute;left:37px;top:20px;width:123px;height:139px;z-index:0;">
+<img src="images/01.jpg" id="Image1" alt=""></div>
+<label for="" id="Label1" style="position:absolute;left:39px;top:159px;width:126px;height:16px;line-height:16px;z-index:1;">Kaos Monster Face</label>
+<div id="wb_Text3" style="position:absolute;left:62px;top:198px;width:88px;height:16px;z-index:2;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+</form>
+</div>
+<div id="wb_Form5" style="position:absolute;left:474px;top:287px;width:196px;height:245px;z-index:29;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form5">
+<div id="wb_Image2" style="position:absolute;left:34px;top:20px;width:131px;height:139px;z-index:3;">
+<img src="images/03.jpg" id="Image2" alt=""></div>
+<label for="" id="Label2" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:4;">Kaos Monster Face</label>
+<div id="wb_Text4" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:5;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+</form>
+</div>
+<div id="wb_Form6" style="position:absolute;left:691px;top:287px;width:196px;height:245px;z-index:30;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form6">
+<div id="wb_Image3" style="position:absolute;left:35px;top:20px;width:126px;height:139px;z-index:6;">
+<img src="images/04.jpg" id="Image3" alt=""></div>
+<label for="" id="Label3" style="position:absolute;left:35px;top:159px;width:126px;height:16px;line-height:16px;z-index:7;">Kaos Monster Face</label>
+<div id="wb_Text5" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:8;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+</form>
+</div>
+<div id="wb_Form7" style="position:absolute;left:254px;top:547px;width:196px;height:245px;z-index:31;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form7">
+<label for="" id="Label4" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:9;">Kaos Chesire Cat</label>
+<div id="wb_Text6" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:10;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image9" style="position:absolute;left:39px;top:20px;width:121px;height:139px;z-index:11;">
+<img src="images/Kaos Chesire Cat.jpg" id="Image9" alt=""></div>
+</form>
+</div>
+<div id="wb_Form8" style="position:absolute;left:474px;top:547px;width:196px;height:245px;z-index:32;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form8">
+<label for="" id="Label5" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:12;">Kaos Horse Chinese </label>
+<div id="wb_Text7" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:13;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image4" style="position:absolute;left:38px;top:20px;width:121px;height:139px;z-index:14;">
+<img src="images/Kaos Horse Chinese Calligrapy.jpg" id="Image4" alt=""></div>
+</form>
+</div>
+<div id="wb_Form9" style="position:absolute;left:691px;top:547px;width:196px;height:245px;z-index:33;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form9">
+<label for="" id="Label6" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:15;">Kaos Kick Out</label>
+<div id="wb_Text8" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:16;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image5" style="position:absolute;left:35px;top:20px;width:126px;height:139px;z-index:17;">
+<img src="images/Kaos Kick Out.jpg" id="Image5" alt=""></div>
+</form>
+</div>
+<div id="wb_Form10" style="position:absolute;left:254px;top:808px;width:196px;height:245px;z-index:34;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form10">
+<label for="" id="Label7" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:18;">Kaos Screaming Panda</label>
+<div id="wb_Text9" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:19;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image6" style="position:absolute;left:39px;top:20px;width:121px;height:136px;z-index:20;">
+<img src="images/Kaos Screaming Panda.jpg" id="Image6" alt=""></div>
+</form>
+</div>
+<div id="wb_Form11" style="position:absolute;left:474px;top:808px;width:196px;height:245px;z-index:35;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form11">
+<label for="" id="Label8" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:21;">Kaos E.T - Steven </label>
+<div id="wb_Text10" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:22;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image7" style="position:absolute;left:38px;top:20px;width:121px;height:136px;z-index:23;">
+<img src="images/Kaos E.T - Steven Spielberg.jpg" id="Image7" alt=""></div>
+</form>
+</div>
+<div id="wb_Form12" style="position:absolute;left:691px;top:808px;width:196px;height:245px;z-index:36;">
+<form name="Form4" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form12">
+<label for="" id="Label9" style="position:absolute;left:31px;top:159px;width:126px;height:16px;line-height:16px;z-index:24;">Kaos Secangkir Teh</label>
+<div id="wb_Text11" style="position:absolute;left:54px;top:198px;width:88px;height:16px;z-index:25;">
+<span style="background-color:#C0C0C0;color:#000000;font-family:Arial;font-size:15px;"><strong>Rp.125.000</strong></span></div>
+<div id="wb_Image8" style="position:absolute;left:35px;top:20px;width:126px;height:136px;z-index:26;">
+<img src="images/Kaos Secangkir Teh Panas.jpg" id="Image8" alt=""></div>
+</form>
+</div>
+<div id="wb_PageHeader">
+<div id="PageHeader">
+<div class="row">
+<div class="col-1">
+</div>
+<div class="col-2">
+</div>
+<div class="col-3">
+<div id="wb_PanelMenu1" style="display:inline-block;width:63px;height:70px;z-index:27;">
+<a href="#PanelMenu1_markup" id="PanelMenu1">&nbsp;</a>
+<div id="PanelMenu1_markup">
+<ul role="menu">
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-home fa-fw"></i><span>Home</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-user fa-fw"></i><span>About Me</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-camera fa-fw"></i><span>Gallery</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-pencil fa-fw"></i><span>Blog</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-link fa-fw"></i><span>Links</span></a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<input type="button" id="Button2" onclick="searchPage();return false;" name="Search" value="Search" style="position:absolute;left:1061px;top:28px;width:96px;height:25px;z-index:38;">
+<form name="SiteSearch1_form" id="SiteSearch1_form" role="search" accept-charset="UTF-8" onsubmit="return searchPage(features)">
+<input type="text" id="SiteSearch1" style="position:absolute;left:745px;top:27px;width:291px;height:16px;z-index:39;" name="SiteSearch1" value="" spellcheck="false" placeholder="Cari Kaos" role="searchbox"></form>
+<div id="wb_Heading1" style="position:absolute;left:0px;top:2px;width:262px;height:37px;z-index:40;">
+<h1 id="Heading1">ZERO CLOTH</h1></div>
+<div id="wb_ResponsiveMenu1" style="position:absolute;left:0px;top:96px;width:1271px;height:69px;z-index:41;">
+<label class="toggle" for="ResponsiveMenu1-submenu" id="ResponsiveMenu1-title">Menu<span id="ResponsiveMenu1-icon"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></span></label>
+<input type="checkbox" id="ResponsiveMenu1-submenu">
+<ul class="ResponsiveMenu1" id="ResponsiveMenu1" role="menu">
+<li><a role="menuitem" href="./Home.html"><i class="fa fa-home fa-2x">&nbsp;</i><br>Home</a></li>
+<li><a role="menuitem" href=""><i class="fa fa-angellist fa-2x">&nbsp;</i><br>Clothing</a></li>
+<li><a role="menuitem" href="./Pemesanan.html"><i class="fa fa-cart-arrow-down fa-2x">&nbsp;</i><br>Pemesanan</a></li>
+<li><a role="menuitem" href="./Login.html"><i class="fa fa-user fa-2x">&nbsp;</i><br>SignUp/SignIn</a></li>
+</ul>
+</div>
+<div id="wb_Shape1" style="position:absolute;left:0px;top:1316px;width:1271px;height:126px;z-index:42;">
+<img src="images/img0004.png" id="Shape1" alt="" style="width:1271px;height:126px;"></div>
+<div id="wb_Login1" style="position:absolute;left:31px;top:195px;width:185px;height:214px;z-index:43;">
+<form name="loginform" method="post" accept-charset="UTF-8" action="<?php echo basename(__FILE__); ?>" id="loginform">
+<input type="hidden" name="form_name" value="loginform">
+<table id="Login1">
+<tr>
+   <td class="header">Log In</td>
+</tr>
+<tr>
+   <td class="label"><label for="username">User Name</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="username" type="text" id="username" value="<?php echo $username; ?>"></td>
+</tr>
+<tr>
+   <td class="label"><label for="password">Password</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="password" type="password" id="password" value="<?php echo $password; ?>"></td>
+</tr>
+<tr>
+   <td class="row"><input id="rememberme" type="checkbox" name="rememberme"><label for="rememberme">Remember me</label></td>
+</tr>
+<tr>
+   <td style="text-align:center;vertical-align:bottom"><input class="button" type="submit" name="login" value="Log In" id="login"></td>
+</tr>
+</table>
+</form>
+</div>
+<div id="wb_CssMenu1" style="position:absolute;left:254px;top:236px;width:388px;height:28px;z-index:44;">
+<ul id="CssMenu1" role="menubar" class="nav">
+<li class="nav-item firstmain"><a role="menuitem" class="nav-link" href="./Home.html" target="_self">Kaos&nbsp;Monster</a>
+</li>
+<li class="nav-item"><a role="menuitem" class="nav-link" href="./Page-2.html" target="_self">Kaos&nbsp;Metal</a>
+</li>
+<li class="nav-item"><a role="menuitem" class="nav-link" href="" target="_self">Kaos&nbsp;Satanic</a>
+</li>
+<li class="nav-item"><a role="menuitem" class="nav-link" href="" target="_self">Kaos&nbsp;Hardcore</a>
+</li>
+</ul>
+</div>
+<div id="wb_Text1" style="position:absolute;left:254px;top:183px;width:160px;height:24px;z-index:45;">
+<span style="color:#000000;font-family:Tahoma;font-size:20px;"><strong>Kategori Kaos</strong></span></div>
+</form>
+</div>
+<div id="wb_Text2" style="position:absolute;left:606px;top:1382px;width:201px;height:20px;z-index:76;">
+<span style="color:#FFFFFF;font-family:'Lucida Sans Unicode';font-size:13px;">Copyright 2021 - ZEROCLOTH</span></div>
+<div id="PageFooter5" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:77;">
+</div>
+<div id="PageFooter1" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1884px;width:100%;height:4px;z-index:78;">
+</div>
+<div id="PageFooter6" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:79;">
+</div>
+<div id="PageFooter2" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:80;">
+</div>
+<div id="PageFooter3" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:81;">
+</div>
+<div id="PageFooter4" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:82;">
+</div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<?php
+$database = './usersdb.php';
+$success_page = '';
+$error_message = "";
+if (!file_exists($database))
+{
+   die('User database not found!');
+   exit;
+}
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form_name']) && $_POST['form_name'] == 'signupform')
+{
+   $newusername = $_POST['username'];
+   $newemail = $_POST['email'];
+   $newpassword = $_POST['password'];
+   $confirmpassword = $_POST['confirmpassword'];
+   $newfullname = $_POST['fullname'];
+   $code = 'NA';
+   if ($newpassword != $confirmpassword)
+   {
+      $error_message = 'Password and Confirm Password are not the same!';
+   }
+   else
+   if (!preg_match("/^[A-Za-z0-9-_!@$]{1,50}$/", $newusername))
+   {
+      $error_message = 'Username is not valid, please check and try again!';
+   }
+   else
+   if (!preg_match("/^[A-Za-z0-9-_!@$]{1,50}$/", $newpassword))
+   {
+      $error_message = 'Password is not valid, please check and try again!';
+   }
+   else
+   if (!preg_match("/^[A-Za-z0-9-_!@$.' &]{1,50}$/", $newfullname))
+   {
+      $error_message = 'Fullname is not valid, please check and try again!';
+   }
+   else
+   if (!preg_match("/^.+@.+\..+$/", $newemail))
+   {
+      $error_message = 'Email is not a valid email address. Please check and try again.';
+   }
+   $items = file($database, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+   foreach($items as $line)
+   {
+      list($username, $password, $email, $fullname) = explode('|', trim($line));
+      if ($newusername == $username)
+      {
+         $error_message = 'Username already used. Please select another username.';
+         break;
+      }
+   }
+   if (empty($error_message))
+   {
+      $file = fopen($database, 'a');
+      fwrite($file, $newusername);
+      fwrite($file, '|');
+      fwrite($file, md5($newpassword));
+      fwrite($file, '|');
+      fwrite($file, $newemail);
+      fwrite($file, '|');
+      fwrite($file, $newfullname);
+      fwrite($file, '|1|');
+      fwrite($file, $code);
+      fwrite($file, "\r\n");
+      fclose($file);
+      $subject = 'Your new account';
+      $message = 'A new account has been setup.';
+      $message .= "\r\nUsername: ";
+      $message .= $newusername;
+      $message .= "\r\nPassword: ";
+      $message .= $newpassword;
+      $message .= "\r\n";
+      $header  = "From: webmaster@yourwebsite.com"."\r\n";
+      $header .= "Reply-To: webmaster@yourwebsite.com"."\r\n";
+      $header .= "MIME-Version: 1.0"."\r\n";
+      $header .= "Content-Type: text/plain; charset=utf-8"."\r\n";
+      $header .= "Content-Transfer-Encoding: 8bit"."\r\n";
+      $header .= "X-Mailer: PHP v".phpversion();
+      mail($newemail, $subject, $message, $header);
+      header('Location: '.$success_page);
+      exit;
+   }
+}
+?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Page</title>
+<meta name="generator" content="WYSIWYG Web Builder 16 - https://www.wysiwygwebbuilder.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="font-awesome.min.css" rel="stylesheet">
+<link href="Wildan_Mahiyat_419281.css" rel="stylesheet">
+<link href="Daftar.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="wb.panel.min.js"></script>
+<script src="searchindex.js"></script>
+<script src="wb.sitesearch.min.js"></script>
+<script>
+var features = 'toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes,status=no,left=,top=,width=,height=';
+function searchPage(features)
+{
+   var element = document.getElementById('SiteSearch1');
+   window.open('sitesearch1-results.html?q='+encodeURIComponent(element.value), '', features);
+   return false;
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   searchParseURL('SiteSearch1');
+   $("#PanelMenu1").panel({animate: true, animationDuration: 200, animationEasing: 'linear', dismissible: true, display: 'overlay', position: 'right', toggle: true, overlay: true});
+});
+</script>
+</head>
+<body>
+<div id="wb_Form1" style="position:absolute;left:19px;top:13px;width:1271px;height:1494px;z-index:17;">
+<form name="Form1" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form1">
+<div id="wb_PageHeader">
+<div id="PageHeader">
+<div class="row">
+<div class="col-1">
+</div>
+<div class="col-2">
+</div>
+<div class="col-3">
+<div id="wb_PanelMenu1" style="display:inline-block;width:63px;height:70px;z-index:0;">
+<a href="#PanelMenu1_markup" id="PanelMenu1">&nbsp;</a>
+<div id="PanelMenu1_markup">
+<ul role="menu">
+   <li role="menuitem"><a href="./Home.html" class="nav-link"><i class="fa fa-home fa-fw"></i><span>Home</span></a></li>
+   <li role="menuitem"><a href="./About-.html" class="nav-link"><i class="fa fa-user fa-fw"></i><span>About Zero Cloth</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-camera fa-fw"></i><span>Gallery</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-pencil fa-fw"></i><span>Blog</span></a></li>
+   <li role="menuitem"><a href="#" class="nav-link"><i class="fa fa-link fa-fw"></i><span>Links</span></a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<input type="button" id="Button2" onclick="searchPage();return false;" name="Search" value="Search" style="position:absolute;left:1061px;top:28px;width:96px;height:25px;z-index:5;">
+<form name="SiteSearch1_form" id="SiteSearch1_form" role="search" accept-charset="UTF-8" onsubmit="return searchPage(features)">
+<input type="text" id="SiteSearch1" style="position:absolute;left:745px;top:27px;width:291px;height:16px;z-index:6;" name="SiteSearch1" value="" spellcheck="false" placeholder="Cari Kaos" role="searchbox"></form>
+<div id="wb_Heading1" style="position:absolute;left:0px;top:2px;width:262px;height:37px;z-index:7;">
+<h1 id="Heading1">ZERO CLOTH</h1></div>
+<div id="wb_ResponsiveMenu1" style="position:absolute;left:0px;top:96px;width:1271px;height:69px;z-index:8;">
+<label class="toggle" for="ResponsiveMenu1-submenu" id="ResponsiveMenu1-title">Menu<span id="ResponsiveMenu1-icon"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></span></label>
+<input type="checkbox" id="ResponsiveMenu1-submenu">
+<ul class="ResponsiveMenu1" id="ResponsiveMenu1" role="menu">
+<li><a role="menuitem" href="./Home.html"><i class="fa fa-home fa-2x">&nbsp;</i><br>Home</a></li>
+<li><a role="menuitem" href="./Clothing.html"><i class="fa fa-angellist fa-2x">&nbsp;</i><br>Clothing</a></li>
+<li><a role="menuitem" href="#"><i class="fa fa-cart-arrow-down fa-2x">&nbsp;</i><br>Pemesanan</a></li>
+<li><a role="menuitem" href="./Pemesanan.html"><i class="fa fa-user fa-2x">&nbsp;</i><br>SignUp/SignIn</a></li>
+</ul>
+</div>
+<div id="wb_Shape1" style="position:absolute;left:0px;top:1316px;width:1271px;height:126px;z-index:9;">
+<img src="images/img0008.png" id="Shape1" alt="" style="width:1271px;height:126px;"></div>
+<div id="wb_Text1" style="position:absolute;left:587px;top:1369px;width:201px;height:20px;z-index:10;">
+<span style="color:#FFFFFF;font-family:'Lucida Sans Unicode';font-size:13px;">Copyright 2021 - ZEROCLOTH</span></div>
+<div id="wb_Form2" style="position:absolute;left:346px;top:347px;width:579px;height:596px;z-index:11;">
+<form name="Form1" method="post" action="mailto:yourname@yourdomain.com" enctype="multipart/form-data" id="Form2">
+<div id="wb_Signup1" style="position:absolute;left:151px;top:100px;width:277px;height:396px;z-index:1;">
+<form name="signupform" method="post" accept-charset="UTF-8" action="<?php echo basename(__FILE__); ?>" id="signupform">
+<input type="hidden" name="form_name" value="signupform">
+<table id="Signup1">
+<tr>
+   <td class="header">Sign up for a new account</td>
+</tr>
+<tr>
+   <td class="label"><label for="fullname">Full Name</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="fullname" type="text" id="fullname"></td>
+</tr>
+<tr>
+   <td class="label"><label for="username">User Name</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="username" type="text" id="username"></td>
+</tr>
+<tr>
+   <td class="label"><label for="password">Password</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="password" type="password" id="password"></td>
+</tr>
+<tr>
+   <td class="label"><label for="confirmpassword">Confirm Password</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="confirmpassword" type="password" id="confirmpassword"></td>
+</tr>
+<tr>
+   <td class="label"><label for="email">E-mail</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="email" type="text" id="email"></td>
+</tr>
+<tr>
+   <td><?php echo $error_message; ?></td>
+</tr>
+<tr>
+   <td style="text-align:center;vertical-align:bottom"><input class="button" type="submit" name="signup" value="Create User" id="signup"></td>
+</tr>
+</table>
+</form>
+</div>
+<div id="wb_Shape2" style="position:absolute;left:0px;top:27px;width:579px;height:60px;z-index:2;">
+<img src="images/img0009.png" id="Shape2" alt="" style="width:579px;height:60px;"></div>
+<div id="wb_Text2" style="position:absolute;left:208px;top:45px;width:200px;height:24px;z-index:3;">
+<span style="color:#FFFFFF;font-family:Tahoma;font-size:20px;"><strong>Buat akun anda</strong></span></div>
+</form>
+</div>
+</form>
+</div>
+<div id="PageFooter5" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:18;">
+</div>
+<div id="PageFooter1" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1884px;width:100%;height:4px;z-index:19;">
+</div>
+<div id="PageFooter6" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:20;">
+</div>
+<div id="PageFooter2" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:21;">
+</div>
+<div id="PageFooter3" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:22;">
+</div>
+<div id="PageFooter4" style="position:absolute;overflow:hidden;text-align:left;left:0px;top:1887px;width:100%;height:1px;z-index:23;">
+</div>
+</body>
+</html>
